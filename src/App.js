@@ -11,9 +11,8 @@ import {
 } from "./redux";
 
 const Posts = () => {
-  const data = useSelector((state) => state);
+  const { posts, error, isPostLoading} = useSelector(({posts, error, isPostLoading}) => ({posts, error, isPostLoading}));
   const dispatch = useDispatch();
-  console.log("Спочатку data", data);
 
   const postsFetcher = async () => {
     try {
@@ -36,16 +35,16 @@ const Posts = () => {
     postsFetcher();
   }, []);
   //Якщо видасть помилку то поверне все що в контейнері h1 про помилку
-  if (data.error) {
-    return <h1>{data.error}</h1>;
+  if (error) {
+    return <h1>{error}</h1>;
   }
-  if (data.isPostLoading) {
+  if (isPostLoading) {
     return <h2>Публікації з jsonplaceholder успішно завантажені!</h2>;
   }
 
   return (
     <div>
-      {data.posts.map(({ id, title, body }) => (
+      {posts.map(({ id, title, body }) => (
         <p key={id}>
           {title}---{body}
         </p>
